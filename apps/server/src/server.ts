@@ -61,6 +61,9 @@ import { speechStreamRouteLayer } from "./speech/stream.ts";
 import * as PullRequestProviderRegistry from "./pullRequest/PullRequestProviderRegistry.ts";
 import * as PullRequestService from "./pullRequest/PullRequestService.ts";
 import * as IssueService from "./issue/IssueService.ts";
+import * as ProjectBoardService from "./projectBoard/ProjectBoardService.ts";
+import * as ProjectBoardWebhookRoute from "./projectBoard/webhookRoute.ts";
+import * as ProjectBoards from "./persistence/ProjectBoards.ts";
 import * as IssueTrackerConnections from "./issue/IssueTrackerConnections.ts";
 import * as IssueTrackerBindings from "./persistence/IssueTrackerBindings.ts";
 import * as IssueTrackerRegistry from "./issue/IssueTrackerRegistry.ts";
@@ -473,6 +476,8 @@ const layerIssueService = Layer.merge(IssueService.layer, IssueTrackerConnection
 
 // One instance serves MCP link calls and refreshes snapshots on thread events.
 const layerThreadIssueService = ThreadIssueService.layer;
+
+const layerProjectBoardService = ProjectBoardService.layer.pipe(Layer.provide(ProjectBoards.layer));
 
 const layerGitManager = GitManager.layer.pipe(
   Layer.provide(Layer.merge(ProjectionStoreV2.layer, ProjectStore.layer)),
@@ -917,6 +922,7 @@ const layerMakeRoutes = Layer.mergeAll(
     ),
     ServerHttp.layerOtlpTracesProxyRoute,
     ServerHttp.layerDesktopReadinessProofRoute,
+    ProjectBoardWebhookRoute.layer,
     ServerHttp.layerAssetRoute,
     ServerHttp.layerAttachmentUploadRoute,
     GuestHttp.layer,
@@ -947,6 +953,8 @@ const layerMakeRoutes = Layer.mergeAll(
   Layer.provide(PeerLinkRequests.layer),
   // Share the service so HTTP/WS clients single-flight reads and invalidate each other's cached patches.
   Layer.provide(layerPullRequestService),
+  // One board copy and one poller serve every client and the webhook route.
+  Layer.provide(layerProjectBoardService),
   Layer.provide(layerThreadIssueService),
   Layer.provide(layerIssueService),
   // The same activity instance RunExecutionService reports to, by layer memoization.

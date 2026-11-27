@@ -224,6 +224,20 @@ import {
   ThreadIssueKey,
 } from "./issue.ts";
 import {
+  ProjectBoardEntry,
+  ProjectBoardError,
+  ProjectBoardLaunchInput,
+  ProjectBoardLaunchResult,
+  ProjectBoardListResult,
+  ProjectBoardMoveInput,
+  ProjectBoardProjectInput,
+  ProjectBoardState,
+  ProjectBoardSubscribeInput,
+  ProjectBoardTarget,
+  ProjectBoardWebhookInput,
+  ProjectBoardWebhookResult,
+} from "./projectBoard.ts";
+import {
   GuestShareCreateError,
   GuestShareCreateInput,
   GuestShareCreateResult,
@@ -720,6 +734,16 @@ export const WS_METHODS = {
   issueTrackersList: "issueTrackers.list",
   issueTrackersConnect: "issueTrackers.connect",
   issueTrackersBindProject: "issueTrackers.bindProject",
+
+  // GitHub Projects boards
+  projectBoardsList: "projectBoards.list",
+  projectBoardsAdd: "projectBoards.add",
+  projectBoardsRemove: "projectBoards.remove",
+  projectBoardsRefresh: "projectBoards.refresh",
+  projectBoardsMove: "projectBoards.move",
+  projectBoardsLaunch: "projectBoards.launch",
+  projectBoardsConfigureWebhooks: "projectBoards.configureWebhooks",
+  projectBoardsSubscribe: "projectBoards.subscribe",
 
   sourceControlLookupRepository: "sourceControl.lookupRepository",
   sourceControlCloneRepository: "sourceControl.cloneRepository",
@@ -1524,6 +1548,57 @@ const WsIssuesReactRpc = Rpc.make(WS_METHODS.issuesReact, {
   payload: IssueReactionInput,
   success: Schema.Void,
   error: IssueRpcError,
+});
+
+const ProjectBoardRpcError = Schema.Union([ProjectBoardError, EnvironmentAuthorizationError]);
+
+const WsProjectBoardsListRpc = Rpc.make(WS_METHODS.projectBoardsList, {
+  payload: ProjectBoardProjectInput,
+  success: ProjectBoardListResult,
+  error: ProjectBoardRpcError,
+});
+
+const WsProjectBoardsAddRpc = Rpc.make(WS_METHODS.projectBoardsAdd, {
+  payload: ProjectBoardTarget,
+  success: ProjectBoardEntry,
+  error: ProjectBoardRpcError,
+});
+
+const WsProjectBoardsRemoveRpc = Rpc.make(WS_METHODS.projectBoardsRemove, {
+  payload: ProjectBoardTarget,
+  success: Schema.Void,
+  error: ProjectBoardRpcError,
+});
+
+const WsProjectBoardsRefreshRpc = Rpc.make(WS_METHODS.projectBoardsRefresh, {
+  payload: ProjectBoardTarget,
+  success: Schema.Void,
+  error: ProjectBoardRpcError,
+});
+
+const WsProjectBoardsMoveRpc = Rpc.make(WS_METHODS.projectBoardsMove, {
+  payload: ProjectBoardMoveInput,
+  success: Schema.Void,
+  error: ProjectBoardRpcError,
+});
+
+const WsProjectBoardsLaunchRpc = Rpc.make(WS_METHODS.projectBoardsLaunch, {
+  payload: ProjectBoardLaunchInput,
+  success: ProjectBoardLaunchResult,
+  error: ProjectBoardRpcError,
+});
+
+const WsProjectBoardsConfigureWebhooksRpc = Rpc.make(WS_METHODS.projectBoardsConfigureWebhooks, {
+  payload: ProjectBoardWebhookInput,
+  success: ProjectBoardWebhookResult,
+  error: ProjectBoardRpcError,
+});
+
+const WsProjectBoardsSubscribeRpc = Rpc.make(WS_METHODS.projectBoardsSubscribe, {
+  payload: ProjectBoardSubscribeInput,
+  success: ProjectBoardState,
+  error: ProjectBoardRpcError,
+  stream: true,
 });
 
 const IssueTrackerRpcError = Schema.Union([
@@ -2511,6 +2586,14 @@ export const WsRpcGroup = RpcGroup.make(
   WsIssueTrackersListRpc,
   WsIssueTrackersConnectRpc,
   WsIssueTrackersBindProjectRpc,
+  WsProjectBoardsListRpc,
+  WsProjectBoardsAddRpc,
+  WsProjectBoardsRemoveRpc,
+  WsProjectBoardsRefreshRpc,
+  WsProjectBoardsMoveRpc,
+  WsProjectBoardsLaunchRpc,
+  WsProjectBoardsConfigureWebhooksRpc,
+  WsProjectBoardsSubscribeRpc,
   WsGuestShareCreateRpc,
   WsServerProbeRpc,
   WsServerGetConfigRpc,

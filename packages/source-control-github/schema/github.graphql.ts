@@ -132,6 +132,32 @@ export const MergeableState = Schema.Literals(["CONFLICTING", "MERGEABLE", "UNKN
 export type MergeableState = typeof MergeableState.Type
 
 /**
+ * The type of a project item.
+ *
+ * - `DRAFT_ISSUE`: Draft Issue
+ * - `ISSUE`: Issue
+ * - `PULL_REQUEST`: Pull Request
+ * - `REDACTED`: Redacted Item
+ */
+export const ProjectV2ItemType = Schema.Literals(["DRAFT_ISSUE", "ISSUE", "PULL_REQUEST", "REDACTED"])
+export type ProjectV2ItemType = typeof ProjectV2ItemType.Type
+
+/**
+ * The display color of a single-select field option.
+ *
+ * - `BLUE`: BLUE
+ * - `GRAY`: GRAY
+ * - `GREEN`: GREEN
+ * - `ORANGE`: ORANGE
+ * - `PINK`: PINK
+ * - `PURPLE`: PURPLE
+ * - `RED`: RED
+ * - `YELLOW`: YELLOW
+ */
+export const ProjectV2SingleSelectFieldOptionColor = Schema.Literals(["BLUE", "GRAY", "GREEN", "ORANGE", "PINK", "PURPLE", "RED", "YELLOW"])
+export type ProjectV2SingleSelectFieldOptionColor = typeof ProjectV2SingleSelectFieldOptionColor.Type
+
+/**
  * The possible methods for updating a pull request's head branch with the base branch.
  *
  * - `MERGE`: Update branch via merge
@@ -410,6 +436,20 @@ export declare namespace Typename {
     | "TransferredEvent" | "Tree" | "UnassignedEvent" | "UnlabeledEvent" | "UnlockedEvent" | "UnmarkedAsDuplicateEvent"
     | "UnpinnedEvent" | "UnsubscribedEvent" | "User" | "UserBlockedEvent" | "UserContentEdit" | "UserList"
     | "UserNamespaceRepository" | "UserStatus" | "VerifiableDomain" | "Workflow" | "WorkflowRun" | "WorkflowRunFile"
+  /** Every possible `__typename` of union `ProjectV2FieldConfiguration`. */
+  export type ProjectV2FieldConfiguration =
+    | "ProjectV2Field" | "ProjectV2IterationField" | "ProjectV2MultiSelectField" | "ProjectV2SingleSelectField"
+  /** Every possible `__typename` of union `ProjectV2ItemContent`. */
+  export type ProjectV2ItemContent = "DraftIssue" | "Issue" | "PullRequest"
+  /** Every possible `__typename` of union `ProjectV2ItemFieldValue`. */
+  export type ProjectV2ItemFieldValue =
+    | "ProjectV2ItemFieldDateValue" | "ProjectV2ItemFieldIterationValue" | "ProjectV2ItemFieldLabelValue"
+    | "ProjectV2ItemFieldMilestoneValue" | "ProjectV2ItemFieldMultiSelectValue" | "ProjectV2ItemFieldNumberValue"
+    | "ProjectV2ItemFieldPullRequestValue" | "ProjectV2ItemFieldRepositoryValue" | "ProjectV2ItemFieldReviewerValue"
+    | "ProjectV2ItemFieldSingleSelectValue" | "ProjectV2ItemFieldTextValue" | "ProjectV2ItemFieldUserValue"
+    | "ProjectV2ItemIssueFieldValue"
+  /** Every possible `__typename` of interface `ProjectV2Owner`. */
+  export type ProjectV2Owner = "Issue" | "Organization" | "PullRequest" | "User"
   /** Every possible `__typename` of union `PullRequestTimelineItems`. */
   export type PullRequestTimelineItems =
     | "AddedToMergeQueueEvent" | "AddedToProjectEvent" | "AddedToProjectV2Event" | "AddedToStackEvent" | "AssignedEvent"

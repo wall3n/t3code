@@ -43,6 +43,7 @@ import { IssueEditScreen } from "./features/issues/IssueEditScreen";
 import { IssueLabelsScreen } from "./features/issues/IssueLabelsScreen";
 import { IssueFilterSearchScreen } from "./features/issues/IssueFilterSearchScreen";
 import { IssueRouteScreen } from "./features/issues/IssueRouteScreen";
+import { BoardRouteScreen } from "./features/board/BoardRouteScreen";
 import {
   RenderErrorBoundary,
   RenderFailureView,
@@ -653,6 +654,11 @@ const RootStackConfig = createWorkspaceStackNavigator({
     IssueFilterSearch: createNativeStackScreen({
       screen: IssueFilterSearchScreen,
       options: SEARCH_SHEET_ROUTE,
+    }),
+    ProjectBoard: createNativeStackScreen({
+      screen: BoardRouteScreen,
+      linking: "board/:environmentId/:projectId",
+      options: pageRoute(),
     }),
     Thread: createNativeStackScreen({
       screen: ThreadRouteScreen,
