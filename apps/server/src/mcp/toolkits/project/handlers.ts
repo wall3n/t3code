@@ -137,7 +137,7 @@ const NON_REPOSITORY_FATAL =
   /^fatal: (?:not a git repository|gitfile does not point to a valid repository)/im;
 
 /** Branches from the checkout's current branch, as the composer does; a checkout with no commit or a detached HEAD stays shared. */
-const defaultWorktreeStrategy = Effect.fn("mcp.defaultWorktreeStrategy")(function* (
+export const defaultWorktreeStrategy = Effect.fn("mcp.defaultWorktreeStrategy")(function* (
   workspaceRoot: string,
 ): Effect.fn.Return<
   OrchestrationV2ThreadLaunchWorkspaceStrategy | undefined,

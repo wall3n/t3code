@@ -11,14 +11,24 @@ import { Kbd, KbdGroup } from "./ui/kbd";
  * behind the modal. On first open the dialog's own initial focus handles it.
  */
 function claimFocusInOpenDialog(input: HTMLInputElement) {
-  const active = input.ownerDocument.activeElement;
-  if (
-    active === null ||
-    active === input.ownerDocument.body ||
-    input.closest('[role="dialog"]')?.contains(active)
-  ) {
-    input.focus();
-  }
+  const doc = input.ownerDocument;
+  const claim = () => {
+    const active = doc.activeElement;
+    if (
+      active === null ||
+      active === doc.body ||
+      input.closest('[role="dialog"]')?.contains(active)
+    ) {
+      input.focus();
+    }
+  };
+  if (doc.activeElement === input) return;
+  claim();
+  // Base UI restores focus to the popup one frame after the removed input blurs. Its frame
+  // was requested first, so ours runs after it and wins.
+  requestAnimationFrame(() => {
+    if (input.isConnected) claim();
+  });
 }
 
 export interface PendingInputSelection {

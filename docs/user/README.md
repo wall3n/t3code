@@ -109,6 +109,7 @@ T3 Code is an open-source control plane for coding agents. It gives the coding a
 - [Maintenance, power, and diagnostics](./diagnostics.md) — Background activity profiles, keep awake, Diagnostics UI, and `t3 trace`.
 - [CLI reference (`t3`)](./cli.md) — Complete overview of `t3` subcommands.
 - [Product usage data and diagnostics](./telemetry.md) — Telemetry opt-outs, agent feedback, mobile diagnostics, and OTLP export.
+- [Project boards](./project-boards.md) — GitHub Projects boards, moving items, and starting an agent on an issue.
 - [Triage an issue](./triage.md) — Letting an agent investigate a T3 Code bug and draft an issue.
 - [Managed policy](./managed-policy.md) — Machine-wide enterprise configuration via JSON, macOS profiles, and Windows GPO/registry.
 - [Open source licenses](./open-source-licenses.md) — Viewing third-party license notices in the app.

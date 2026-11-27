@@ -38,6 +38,7 @@ const reactTests = [
   "src/components/ui/AndroidAnchoredMenu.android.test.tsx",
   "src/features/files/ZipArchiveView.test.tsx",
   "src/features/pull-requests/guide/useReviewGuide.test.tsx",
+  "src/features/board/BoardRouteScreen.test.tsx",
   "src/features/settings/SettingsServerControlsRouteScreen.test.tsx",
   "src/features/settings/SettingsScheduledTasksRouteScreen.test.tsx",
   "src/features/settings/components/BranchNamingSettings.test.tsx",

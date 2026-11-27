@@ -49,11 +49,15 @@ function toActor(raw: Actor | null | undefined): IssueActor | null {
       };
 }
 
-function toActors(raw: ReadonlyArray<Actor | null> | null | undefined): ReadonlyArray<IssueActor> {
+export function toActors(
+  raw: ReadonlyArray<Actor | null> | null | undefined,
+): ReadonlyArray<IssueActor> {
   return (raw ?? []).flatMap((entry) => toActor(entry) ?? []);
 }
 
-function toLabels(raw: ReadonlyArray<Label | null> | null | undefined): ReadonlyArray<IssueLabel> {
+export function toLabels(
+  raw: ReadonlyArray<Label | null> | null | undefined,
+): ReadonlyArray<IssueLabel> {
   return (raw ?? []).flatMap((label) => {
     const name = trimmed(label?.name);
     return name === null ? [] : [{ name, color: trimmed(label?.color) }];

@@ -135,6 +135,10 @@ export function IssuesScreen(
   const [state, setState] = useState<IssueListState>("open");
   const [involvement, setInvolvement] = useState<IssueInvolvement>("all");
   const navigation = useNavigation();
+  // Boards live on GitHub repositories, so a project without one has none to open.
+  const boardProjects = useProjects().filter(
+    (project) => project.isScratch !== true && project.repositoryIdentity != null,
+  );
   const [{ labels, assignee }, setFilters] = useAtom(issueListFiltersAtom);
   const { themeAppearance } = useAppearancePreferences();
   const [sort, setSort] = useState<IssueListSort>("updated");
@@ -387,6 +391,20 @@ export function IssuesScreen(
                   scrollToTop();
                 }}
               />
+              {boardProjects.length > 0 ? (
+                <ListFilterMenu
+                  label={gt("Board", { $context: "menu that opens a GitHub project board" })}
+                  accessibilityLabel={gt("Open a project's board")}
+                  actions={boardProjects.map((project) => ({
+                    id: `${project.environmentId} ${project.id}`,
+                    title: project.title,
+                  }))}
+                  onSelect={(id) => {
+                    const [environmentId = "", projectId = ""] = id.split(" ");
+                    navigation.navigate("ProjectBoard", { environmentId, projectId });
+                  }}
+                />
+              ) : null}
               <ListFilterMenu
                 label={messages(STATES[state])}
                 active={state !== "open"}

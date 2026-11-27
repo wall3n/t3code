@@ -86,6 +86,7 @@ import {
   TextSearchIcon,
   UserPlusIcon,
   WorkflowIcon,
+  KanbanSquareIcon,
 } from "lucide-react";
 import { openThreadFind } from "./chat/threadFindStore";
 import { dispatchPreviewAction } from "./preview/previewActionBus";
@@ -1756,6 +1757,16 @@ function OpenCommandPaletteDialog(props: {
       icon: <IssueGlyph.issue className={ITEM_ICON_CLASS} />,
       run: async () => {
         await navigate({ to: "/issues", search: readIssueListPreferences() });
+      },
+    });
+    actionItems.push({
+      kind: "action",
+      value: "action:board",
+      searchTerms: ["board", "kanban", "project", "github projects", "tickets", "agents"],
+      title: gt("Open board"),
+      icon: <KanbanSquareIcon className={ITEM_ICON_CLASS} />,
+      run: async () => {
+        await navigate({ to: "/board" });
       },
     });
   }

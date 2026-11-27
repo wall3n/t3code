@@ -39,6 +39,10 @@
       "types": "./src/server/IssueTracker.ts",
       "import": "./src/server/IssueTracker.ts"
     },
+    "./server/ProjectBoard": {
+      "types": "./src/server/ProjectBoard.ts",
+      "import": "./src/server/ProjectBoard.ts"
+    },
     "./server/IssueTrackerHost": {
       "types": "./src/server/IssueTrackerHost.ts",
       "import": "./src/server/IssueTrackerHost.ts"

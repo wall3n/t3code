@@ -53,6 +53,13 @@ export const CLIENT_GUARDED_RPC_SCOPES = {
   // A tracker credential and a project's binding are settings, saved under the same grant.
   [WS_METHODS.issueTrackersConnect]: AuthSettingsWriteScope,
   [WS_METHODS.issueTrackersBindProject]: AuthSettingsWriteScope,
+  // A board binding is a project setting; webhooks also write hooks onto GitHub repositories.
+  [WS_METHODS.projectBoardsAdd]: AuthSettingsWriteScope,
+  [WS_METHODS.projectBoardsRemove]: AuthSettingsWriteScope,
+  [WS_METHODS.projectBoardsConfigureWebhooks]: AuthSettingsWriteScope,
+  [WS_METHODS.projectBoardsMove]: AuthSourceControlWriteScope,
+  // Starts an agent on this environment's providers.
+  [WS_METHODS.projectBoardsLaunch]: AuthOrchestrationOperateScope,
   // Writing a guide runs a model on this environment's providers, which reading one does not.
   [WS_METHODS.pullRequestsGenerateReviewGuide]: AuthOrchestrationOperateScope,
   [WS_METHODS.projectsCreateFromThread]: AuthOrchestrationOperateScope,

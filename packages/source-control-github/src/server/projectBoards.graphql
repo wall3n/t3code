@@ -1,0 +1,178 @@
+fragment ProjectBoardSummaryFields on ProjectV2 {
+  id
+  number
+  title
+  url
+  closed
+  owner {
+    ... on User {
+      login
+    }
+    ... on Organization {
+      login
+    }
+  }
+}
+
+query ProjectBoardsForRepository($owner: String!, $name: String!, $rows: Int!) {
+  repository(owner: $owner, name: $name) {
+    projectsV2(first: $rows, orderBy: { field: UPDATED_AT, direction: DESC }) {
+      nodes {
+        ...ProjectBoardSummaryFields
+      }
+    }
+    owner {
+      ... on User {
+        projectsV2(first: $rows, orderBy: { field: UPDATED_AT, direction: DESC }) {
+          nodes {
+            ...ProjectBoardSummaryFields
+          }
+        }
+      }
+      ... on Organization {
+        projectsV2(first: $rows, orderBy: { field: UPDATED_AT, direction: DESC }) {
+          nodes {
+            ...ProjectBoardSummaryFields
+          }
+        }
+      }
+    }
+  }
+}
+
+query ProjectBoardRead($id: ID!, $cursor: String, $rows: Int!) {
+  node(id: $id) {
+    ... on ProjectV2 {
+      ...ProjectBoardSummaryFields
+      field(name: "Status") {
+        ... on ProjectV2SingleSelectField {
+          id
+          options {
+            id
+            name
+            color
+            description
+          }
+        }
+      }
+      items(first: $rows, after: $cursor) {
+        pageInfo {
+          hasNextPage
+          endCursor
+        }
+        nodes {
+          id
+          type
+          updatedAt
+          fieldValueByName(name: "Status") {
+            ... on ProjectV2ItemFieldSingleSelectValue {
+              optionId
+            }
+          }
+          content {
+            ... on DraftIssue {
+              title
+              updatedAt
+              assignees(first: 10) {
+                nodes {
+                  login
+                  name
+                  avatarUrl
+                }
+              }
+            }
+            ... on Issue {
+              number
+              title
+              url
+              state
+              updatedAt
+              repository {
+                nameWithOwner
+              }
+              assignees(first: 10) {
+                nodes {
+                  login
+                  name
+                  avatarUrl
+                }
+              }
+              labels(first: 10) {
+                nodes {
+                  name
+                  color
+                }
+              }
+              closedByPullRequestsReferences(first: 5, includeClosedPrs: true) {
+                nodes {
+                  number
+                  title
+                  url
+                  state
+                  isDraft
+                  repository {
+                    nameWithOwner
+                  }
+                }
+              }
+            }
+            ... on PullRequest {
+              number
+              title
+              url
+              pullRequestState: state
+              isDraft
+              updatedAt
+              repository {
+                nameWithOwner
+              }
+              assignees(first: 10) {
+                nodes {
+                  login
+                  name
+                  avatarUrl
+                }
+              }
+              labels(first: 10) {
+                nodes {
+                  name
+                  color
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+mutation SetProjectBoardItemStatus(
+  $projectId: ID!
+  $itemId: ID!
+  $fieldId: ID!
+  $optionId: String!
+) {
+  updateProjectV2ItemFieldValue(
+    input: {
+      projectId: $projectId
+      itemId: $itemId
+      fieldId: $fieldId
+      value: { singleSelectOptionId: $optionId }
+    }
+  ) {
+    projectV2Item {
+      id
+    }
+  }
+}
+
+mutation ClearProjectBoardItemStatus($projectId: ID!, $itemId: ID!, $fieldId: ID!) {
+  clearProjectV2ItemFieldValue(
+    input: { projectId: $projectId, itemId: $itemId, fieldId: $fieldId }
+  ) {
+    projectV2Item {
+      id
+    }
+  }
+}

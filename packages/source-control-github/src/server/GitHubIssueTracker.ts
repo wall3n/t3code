@@ -106,7 +106,7 @@ function searchQuery(
   ].join(" ");
 }
 
-function reasonFor(
+export function reasonFor(
   error: GitHubRequestPolicy.GitHubApiError | GraphQLClientError.GraphQLClientError,
 ): IssueTrackerError["reason"] {
   switch (error._tag) {
